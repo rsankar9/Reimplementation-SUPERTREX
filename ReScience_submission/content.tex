@@ -2,10 +2,8 @@
 
 \section{Introduction}
 
-\textcite{pyle2019} introduce a novel learning algorithm to the reservoir computing framework, which harnesses the dynamics of a recurrently connected network to generate time series. Most existing algorithms are built on fully supervised learning rules (e.g. FORCE \cite{sussillo2009}), which limits its potential applications, or the more biologically-realistic reinforcement learning techniques (e.g. RMHL \cite{hoerzer2014}) which unfortunately fail to converge on complex spatio-temporal signal generation tasks. \textcite{pyle2019} utilise the advantages of these two learning rules, while averting their individual shortcomings, by combining the two algorithms to form the SUPERTREX model. The workings of this model are aligned to the theory of motor learning involving the basal ganglia, from both rodent and songbird literature \cite{brainard2002}. It has been hypothesised that a cortical pathway may work in tandem with a pathway via the basal ganglia for motor skill acquisition, wherein the basal ganglia pathway would function as a tutor providing guiding signals, which would ultimately be consolidated in the primary cortical pathway in charge of production of the motor commands \cite{olveczky2011}. Here, the basal ganglia pathway, which uses reward-modulated exploration based learning, akin to the RMHL algorithm, works in parallel with the cortical pathway, modeled using the fully-supervised FORCE algorithm. The SUPERTREX model uses both these pathways in parallel, with the RMHL-based pathway providing the supervisory signal that the FORCE-based pathway requires.\\
-
-
-
+\textcite{pyle2019} introduce a novel learning algorithm to the reservoir computing framework, which harnesses the dynamics of a recurrently connected network to generate time series. Most existing algorithms are built on fully supervised learning rules (e.g. FORCE \cite{sussillo2009}), which limits its potential applications, or the more biologically-realistic reinforcement learning techniques (e.g. RMHL \cite{hoerzer2014}) which unfortunately fail to converge on complex spatio-temporal signal generation tasks. \textcite{pyle2019} utilise the advantages of these two learning rules, while averting their individual shortcomings, by combining the two algorithms to form the SUPERTREX model. The workings of this model are aligned to the theory of motor learning involving the basal ganglia, from both rodent and songbird literature \cite{brainard2002}. It has been hypothesised that a cortical pathway may work in tandem with a pathway via the basal ganglia for motor skill acquisition, wherein the basal ganglia pathway would function as a tutor providing guiding signals, which would ultimately be consolidated in the primary cortical pathway in charge of production of the motor commands \cite{olveczky2011}. Here, the basal ganglia pathway, which uses reward-modulated exploration based learning, akin to the RMHL algorithm, works in parallel with the cortical pathway, modeled using the fully-supervised FORCE algorithm. The SUPERTREX model uses both these pathways in parallel, with the RMHL-based pathway providing the supervisory signal that the FORCE-based pathway requires.
+%
 In this article, we provide a modular and user-friendly Python re-implementation of the model presented by \textcite{pyle2019}.
 
 
@@ -640,14 +638,40 @@ These slight modifications address the minor shortcomings we encountered earlier
 
 \section{Discussion}
 
-In this article, we discuss the SUPERTREX model presented by \textcite{pyle2019}. We compare the results presented in the paper and adapt the MATLAB scripts provided by the author to a more modular and user-friendly Python reimplementation. Further, with two minor alterations, we are able to improve the robustness and scalability of the model.
+In this article, we discussed the SUPERTREX model presented by
+\textcite{pyle2019}. We compared the results presented in the paper
+using the MATLAB scripts provided by the author with out modular and
+user-friendly Python replication. Furthermore, we were able to improve
+the robustness and scalability of the model with two minor alterations,
+%
+The Python re-implementation strives to be a close adaptation of the
+original scripts of the authors and differs mainly in the method of
+initialisation of the reservoir connectivity matrix. This is due to
+the usage of the function {\tt sprandn} in the MATLAB scripts, whose
+internal implementation is freely available. Most of the details for
+the implementation of the models are also described in the paper. Only
+two necessary details were missing, the inclusion of a crucial
+learning rate of 0.0005 and a compensatory factor of 0.5 within the
+update of the readout weights of the exploratory pathway in the RMHL
+and SUPERTREX models for Tasks 2 and 3.
+%
+The three algorithms (FORCE, RMHL and SUPERTREX) have been tested on
+three tasks, presented in \textcite{pyle2019}. For Task 1 and 2, we
+can now confirm that the three algorithms function as presented in the
+paper. For Task 3, the SUPERTREX model's behaviour is also
+reproducible, although the performance is dependent on the seed used
+for the random number generator. Furthermore, we observed that the
+model is quite sensitive to changes in task parameters, such as the
+number of arms. In several cases, this was due to the uninhibited
+increase in the readout weights. We propose the inclusion of a
+compensation factor for the number of arm segments, which limits the
+growth of the readout weights, and allows the simulation to proceed in
+a meaningful manner. This considerably improves the robustness and the
+scalability of the original model.\\
 
-The Python re-implementation strives to be a close adaptation of the original scripts of the authors and  differs mainly in the method of initialisation of the reservoir connectivity matrix. This is due to the usage of the function sprandn in the MATLAB scripts, whose internal implementation is freely available. Most of the details for the implementation of the models are also described in the paper. Only two necessary  details were missing, the inclusion of a crucial learning rate of 0.0005 and a compensatory factor of 0.5 within the update of the readout weights of the exploratory pathway in the RMHL and SUPERTREX models for Tasks 2 and 3.
-
-The three algorithms (FORCE, RMHL and SUPERTREX) are tested on three tasks, presented in \textcite{pyle2019}. For Task 1 and 2, we confirm that the three algorithms function as presented in the paper. For Task 3, the SUPERTREX model's behaviour is also reproducible, although the performance is dependent on the seed used for the random number generator. Further, we observe that the model is quite sensitive to changes in task parameters, such as the number of arms. In several cases, this was due to the uninhibited increase in the readout weights. We propose the inclusion of a compensation factor for the number of arm segments, which limits the growth of the readout weights, and allows the simulation to proceed in a meaningful manner. This considerably improves the robustness and the scalability of the model.
-
-We, thus, conclude that the theory is promising and the model functions as presented in the paper for Task 1 and 2, and with a minor adjustment, also for task 3.
-
+We can conclude that the theory is promising and the model functions
+as presented in the paper for Task 1 and 2, and with a minor adjustment
+for task 3.
 
 
 % ----------------------------------------------
