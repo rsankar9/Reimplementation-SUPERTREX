@@ -11,12 +11,12 @@ In this article, we provide a modular and user-friendly Python re-implementation
 
 \subsection{Framework}
 
-The paper \cite{pyle2019} proposes a model for sensorimotor learning using the framework of reservoir computing. It is based on two existing reservoir computing techniques:- FORCE and RMHL.\\
+\textcite{pyle2019} proposes a model for sensorimotor learning using the framework of reservoir computing. It is based on two existing reservoir computing techniques:- FORCE and RMHL.\\
 
-FORCE (or first-order reduced and controlled error) is a fully-supervised learning rule, which is widely used within the reservoir computing framework \cite{sussillo2009}. A recurrently connected reservoir, composed of rate-coded neurons is trained to produce a target time series by modifying the readout weights between the reservoir and the output layer. The output, in turn, interacts with the reservoir by providing feedback. FORCE can accurately generate complex dynamical target time-series. However, the model must have explicity knowledge of the target function, as FORCE requires a fully supervisory signal of the correct output in order to compute the error during training. \\
+FORCE (or first-order reduced and controlled error) is a fully-supervised learning rule, which is widely used within the reservoir computing framework \cite{sussillo2009}. A recurrently connected reservoir, composed of rate-coded neurons is trained to produce a target time series by modifying the readout weights between the reservoir and the output layer. The output, in turn, interacts with the reservoir by providing feedback. FORCE can accurately generate complex dynamical target time-series. However, the model must have explicit knowledge of the target function, as FORCE requires a fully supervisory signal of the correct output in order to compute the error during training. \\
 
 
-RMHL (or Reward-Modulated Hebbian Learning) is built on the concept of reinforcement learning, and uses only a scalar error signal indicating reward, allowing it to be applicable in a wider range of scenarios than FORCE \cite{hoerzer2014}. RMHL introduces perturbations in the performance of the model, and uses the information gained from this exploration to find the target. This is akin to dopamine-dependent Hebbian learning in the basal ganglia. However, RMHL fails to converge to an accurate solution on several complex tasks. Moreover, it has been observed in songbirds that while the basal ganglia provdes a tutor signal in the early stages, learning is eventually consolidated in a parallel cortical pathway, which is primarily responsible for motor activity \cite{olveczky2011}. RMHL cannot account for such empirical observations.\\
+RMHL (or Reward-Modulated Hebbian Learning) is built on the concept of reinforcement learning, and uses only a scalar error signal indicating reward, allowing it to be applicable in a wider range of scenarios than FORCE \cite{hoerzer2014}. RMHL introduces perturbations in the performance of the model, and uses the information gained from this exploration to find the target. This is akin to dopamine-dependent Hebbian learning in the basal ganglia. However, RMHL fails to converge to an accurate solution on several complex tasks. Moreover, it has been observed in songbirds that while the basal ganglia provides a tutor signal in the early stages, learning is eventually consolidated in a parallel cortical pathway, which is primarily responsible for motor activity \cite{olveczky2011}. RMHL cannot account for such empirical observations.\\
 
 
 SUPERTREX, the model proposed by the authors, tries to merge the advantages of both of these algorithms by combining both models. The more wide-ranged applicability of RMHL, owing to its usage of a one dimensional error signal, is used to train the model, while the superior maintenance ability of FORCE is recruited to consolidate the tutoring of the RMHL pathway. This allows for partially unsupervised learning, along with better performance post-training. This could also potentially explain the empirical evidence, discussed above. Thus, the SUPERTREX model consists of two parallel pathways, one based on RMHL (exploratory) and one based on FORCE (mastery), each consisting of its own set of weights. The mastery pathway uses the output of the exploratory pathway as its supervisory signal.
@@ -34,12 +34,12 @@ SUPERTREX, the model proposed by the authors, tries to merge the advantages of b
     \tau_{w 2} \frac{d W_{2}}{d t}=\left(\mathbf{z}-\mathbf{z}_{2}\right) \mathbf{r}^{T} P
 \end{equation}
     
-where the output $\mathbf{z}$ of the model is the combination of the outputs $\mathbf{z_1}$ and $\mathbf{z_2}$ of the FORCE and RMHL pathways, respectively, $\tau$ is a time constant, $W$ denotes the readout weights of the two pathways, $\mathbf{r}$ is the reservoir activity,  $\Phi(x)$ is a sublinear function that controls when to update the weights, $P$ is a running estimate of the inverse of the correlation matrix of rates and $\hat{x}$  is a high-pass filtered version of $x$.
+where the output $\mathbf{z}$ of the model is the combination of the outputs $\mathbf{z_1}$ and $\mathbf{z_2}$ of the FORCE and RMHL pathways, respectively, $\tau$ is a time constant, $W$ denotes the readout weights of the two pathways, $\mathbf{r}$ is the reservoir activity,  $\Phi(x)$ is a sub-linear function that controls when to update the weights, $P$ is a running estimate of the inverse of the correlation matrix of rates and $\hat{x}$  is a high-pass filtered version of $x$.
 
 
 \subsection{Task}
 
-The authors test the SUPERTREX model on three motor tasks, and compare its performance to those of FORCE and RMHL. Each task uses the paradigm of exploration by a multi-segmented arm, pivoted at a point. The target of each task is to learn to produce a given spatio-temporal signal, under different constraints. Task 1 tests the performance of the model when the target output is known. This task requires the spatiotemporal signal to be produced directly by the model. Thus, the error signal is a direct indicator of the change required in the output of the model, i.e. fully supervisory. Task 2 is more indirect, and tests the performance of the model when the target is unknown, and only a scalar error signal is provided. The task requires the angles between the arm segments to be generated by the model, which would in turn produce the trajectory of the target spatio-temporal signal. In this case, the error signal is not a direct indicator of the change required in the output of the model. A non-linear inverse transformation would be required. It is thus, not a fully supervisory signal, but simply a reinforcement signal. In task 3, the movement of the arm segments are penalised variably. This creates the need to choose one from multiple candidate solutions by optimising the cost of changing the angles between the arm segments.
+The authors test the SUPERTREX model on three motor tasks, and compare its performance to those of FORCE and RMHL. Each task uses the paradigm of exploration by a multi-segmented arm, pivoted at a point. The target of each task is to learn to produce a given spatio-temporal signal, under different constraints. Task 1 tests the performance of the model when the target output is known. This task requires the spatio-temporal signal to be produced directly by the model. Thus, the error signal is a direct indicator of the change required in the output of the model, i.e. fully supervisory. Task 2 is more indirect, and tests the performance of the model when the target is unknown, and only a scalar error signal is provided. The task requires the angles between the arm segments to be generated by the model, which would in turn produce the trajectory of the target spatio-temporal signal. In this case, the error signal is not a direct indicator of the change required in the output of the model. A non-linear inverse transformation would be required. It is thus, not a fully supervisory signal, but simply a reinforcement signal. In task 3, the movement of the arm segments are penalised variably. This creates the need to choose one from multiple candidate solutions by optimising the cost of changing the angles between the arm segments.
 
 
 \subsubsection{Disclaimer}
@@ -186,7 +186,7 @@ We verify these observations with the MATLAB scripts provided by the authors as 
         \end{subfigure}
         
 
-    \caption{Results for Task 1 with the SUPERTREX algorithm. The target time‐series is learned accurately during the training phase, andis also maintained in a stable manner during testing phase, albeit not as well as FORCE, in both implementations, as presented in \cite{pyle2019}.}
+    \caption{Results for Task 1 with the SUPERTREX algorithm. The target time‐series is learned accurately during the training phase, and is also maintained in a stable manner during testing phase, albeit not as well as FORCE, in both implementations, as presented in \cite{pyle2019}.}
     \label{Fig:compTask1ST}
     
     \end{subfigure}
@@ -201,7 +201,7 @@ We verify these observations with the MATLAB scripts provided by the authors as 
 
 \subsection{Task 2}
 
-We compare the MATLAB scripts and our Python adaptation for the three algorithms on Task 2, with the results presented in the article. Task 2 is designed to test the performance of these three algorithms when generating an unknown target from a scalar error signal. Using the paradigm of a pivoted multi-segmented arm, the objective of this task is to produce a time‐series by generating the angles between the arm segments. Motor output does not control the position of the end-effector of the arm, but instead controls the angles of the arm joints, which are nonlinearly related to end-effector position. Post the training phase, the readout weights are frozen and in the SUPERTREX model, the exploratory pathway is deactivated. \\
+We compare the MATLAB scripts and our Python adaptation for the three algorithms on Task 2, with the results presented in the article. Task 2 is designed to test the performance of these three algorithms when generating an unknown target from a scalar error signal. Using the paradigm of a pivoted multi-segmented arm, the objective of this task is to produce a time‐series by generating the angles between the arm segments. Motor output does not control the position of the end-effector of the arm, but instead controls the angles of the arm joints, which are non-linearly related to end-effector position. Post the training phase, the readout weights are frozen and in the SUPERTREX model, the exploratory pathway is deactivated. \\
 
 The article claims that:
 \begin{itemize}
@@ -502,7 +502,7 @@ In order to make the model more scalable in terms of task parameters, and also m
     \item Two, the SUPERTREX model transfers the information from the exploratory pathway to the mastery pathway, only if the error is consistently below a certain threshold. In the MATLAB scripts, this threshold is set at 1.5e-3 for Task 1 and Task 2, while at 1.5e-2 for Task 3. We change the transfer threshold for Task 2 from 1.5e-3 to 1.5e-2. 
 \end{itemize}
 
-These slight modifications address the minor shortcomings we encountered earlier with the performance of SUPERTREX in Task 2 and 3, by including a compensation factor for the change in number of arm segments. This prevents the weights from increasing exponentially, and lets the simulation proceed in a meaningful manner. We also increase the error threshold governing the transfer of information to the mastery pathway. The increase from 1.5e-3 to 1.5e-2 makes the model more tolerant of fluctuations, while continuing to explore and learn a good solution. Although this does not lead to a critical change for the above tasks, this alteration unlocks the potential for the model to be more scalable. We find that with these alterations, on merely increasing the number of timesteps per training cycle and with no further fine tuning of hyperparameters, the model is able to learn with reasonable accuracy over a wider range of task parameters, for e.g., on adding surplus segments with length 0.1 each, the model is able to perform well with up to 50 arm segments  (Figure~\ref{Fig:Scalability_Task2}).
+These slight modifications address the minor shortcomings we encountered earlier with the performance of SUPERTREX in Task 2 and 3, by including a compensation factor for the change in number of arm segments. This prevents the weights from increasing exponentially, and lets the simulation proceed in a meaningful manner. We also increase the error threshold governing the transfer of information to the mastery pathway. The increase from 1.5e-3 to 1.5e-2 makes the model more tolerant of fluctuations, while continuing to explore and learn a good solution. Although this does not lead to a critical change for the above tasks, this alteration unlocks the potential for the model to be more scalable. We find that with these alterations, on merely increasing the number of timesteps per training cycle and with no further fine tuning of hyper-parameters, the model is able to learn with reasonable accuracy over a wider range of task parameters, for e.g., on adding surplus segments with length 0.1 each, the model is able to perform well with up to 50 arm segments  (Figure~\ref{Fig:Scalability_Task2}).
 
 
 
@@ -576,7 +576,7 @@ These slight modifications address the minor shortcomings we encountered earlier
             \includegraphics[trim=1cm 0cm 0cm 0cm, clip=true,height=0.1\linewidth,width=.45\linewidth]{Figures/Improv/ST_T2_Seg10_Var_MSE.png}
             
         \end{subfigure}
-    \caption{Scalability of the performance of the modified Python implementation using the SUPERTREX algorithm on Task 2. The lengths of the arm segments are 1.8, 1.2 and 0.6 for the first three segments. (akin to task 3) and 0.1 for each additional segment. Here, the simulations for task 2 with 5 to 50 segments are shown, all using the default seed 5489 for the random number generator. In each subfigure, the top panel shows the produced curve, the middle panels show the evolution of the x and y coordinates of the end-effector of the arm (blue) throughout the training and test phase, along with the target (red). The grey vertical line demarcates the training and testing phase. The bottom panel shows the progression of the mean squared error through the simulation. Until ten segments, we use 10000 timesteps per cycle, 15000 for twenty segments, 20000 for thirty to forty segments and 30000 for fifty segments. Without any further parameter tuning, the model is able to learn to generate the timeseries with an arm composed of upto 50 segments, albeit with lower precision. (Continued on next page.)}
+    \caption{Scalability of the performance of the modified Python implementation using the SUPERTREX algorithm on Task 2. The lengths of the arm segments are 1.8, 1.2 and 0.6 for the first three segments. (akin to task 3) and 0.1 for each additional segment. Here, the simulations for task 2 with 5 to 50 segments are shown, all using the default seed 5489 for the random number generator. In each subfigure, the top panel shows the produced curve, the middle panels show the evolution of the x and y coordinates of the end-effector of the arm (blue) throughout the training and test phase, along with the target (red). The grey vertical line demarcates the training and testing phase. The bottom panel shows the progression of the mean squared error through the simulation. Until ten segments, we use 10000 time steps per cycle, 15000 for twenty segments, 20000 for thirty to forty segments and 30000 for fifty segments. Without any further parameter tuning, the model is able to learn to generate the time-series with an arm composed of up to 50 segments, albeit with lower precision. (Continued on next page.)}
     \label{Fig:Scalability_Task2}
 
 \end{figure}
@@ -629,7 +629,7 @@ These slight modifications address the minor shortcomings we encountered earlier
     
 
 
-    \caption{(Continued from previous page.) Scalability of the performance of the modified Python implementation using the SUPERTREX algorithm on Task 2. The lengths of the arm segments are 1.8, 1.2 and 0.6 for the first three segments. (akin to task 3) and 0.1 for each additional segment. Here, the simulations for task 2 with 5 to 50 segments are shown, all using the default seed 5489 for the random number generator. In each subfigure, the top panel shows the produced curve, the middle panels show the evolution of the x and y coordinates of the end-effector of the arm (blue) throughout the training and test phase, along with the target (red). The grey vertical line demarcates the training and testing phase. The bottom panel shows the progression of the mean squared error through the simulation. Until ten segments, we use 10000 timesteps per cycle, 15000 for twenty segments, 20000 for thirty to forty segments and 30000 for fifty segments. Without any further parameter tuning, the model is able to learn to generate the timeseries with an arm composed of upto 50 segments, albeit with lower precision.}
+    \caption{(Continued from previous page.) Scalability of the performance of the modified Python implementation using the SUPERTREX algorithm on Task 2. The lengths of the arm segments are 1.8, 1.2 and 0.6 for the first three segments. (akin to task 3) and 0.1 for each additional segment. Here, the simulations for task 2 with 5 to 50 segments are shown, all using the default seed 5489 for the random number generator. In each subfigure, the top panel shows the produced curve, the middle panels show the evolution of the x and y coordinates of the end-effector of the arm (blue) throughout the training and test phase, along with the target (red). The grey vertical line demarcates the training and testing phase. The bottom panel shows the progression of the mean squared error through the simulation. Until ten segments, we use 10000 time steps per cycle, 15000 for twenty segments, 20000 for thirty to forty segments and 30000 for fifty segments. Without any further parameter tuning, the model is able to learn to generate the time-series with an arm composed of up to 50 segments, albeit with lower precision.}
     \label{Fig:Scalability_Task2_cont}
 
 \end{figure}
@@ -642,13 +642,13 @@ In this article, we discussed the SUPERTREX model presented by
 \textcite{pyle2019}. We compared the results presented in the paper
 using the MATLAB scripts provided by the author with out modular and
 user-friendly Python replication. Furthermore, we were able to improve
-the robustness and scalability of the model with two minor alterations,
-%
+the robustness and scalability of the model with two minor alterations.
+
 The Python re-implementation strives to be a close adaptation of the
 original scripts of the authors and differs mainly in the method of
 initialisation of the reservoir connectivity matrix. This is due to
 the usage of the function {\tt sprandn} in the MATLAB scripts, whose
-internal implementation is freely available. Most of the details for
+internal implementation is not freely available. Most of the details for
 the implementation of the models are also described in the paper. Only
 two necessary details were missing, the inclusion of a crucial
 learning rate of 0.0005 and a compensatory factor of 0.5 within the
@@ -664,7 +664,7 @@ for the random number generator. Furthermore, we observed that the
 model is quite sensitive to changes in task parameters, such as the
 number of arms. In several cases, this was due to the uninhibited
 increase in the readout weights. We propose the inclusion of a
-compensation factor for the number of arm segments, which limits the
+compensation factor for the number of arm segments, which inhibits the
 growth of the readout weights, and allows the simulation to proceed in
 a meaningful manner. This considerably improves the robustness and the
 scalability of the original model.\\
