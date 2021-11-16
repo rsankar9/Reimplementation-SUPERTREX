@@ -1,0 +1,90 @@
+
+
+
+\section{Introduction}
+
+\textcite{pyle2019} introduce a novel learning algorithm to the reservoir computing framework, which harnesses the dynamics of a recurrently connected network to generate time series. Most existing algorithms are built on fully supervised learning rules (e.g. FORCE \cite{sussillo2009}), which limits their potential applications, or the more biologically-realistic reinforcement learning techniques (e.g. RMHL \cite{hoerzer2014}) which unfortunately fail to converge on complex spatio-temporal signal generation tasks. \textcite{pyle2019} use the advantages of these two learning rules, while averting their individual shortcomings, by combining the two algorithms to form the SUPERTREX model. The workings of this model are aligned to the theory of motor learning involving the basal ganglia, from rodent and songbird literature \cite{brainard2002}. This hypothesises that a cortical pathway works in tandem with the basal ganglia for motor skill acquisition, wherein the basal ganglia pathway functions as a tutor, providing guiding signals that would ultimately be consolidated in the primary cortical pathway in charge of production of the motor commands \cite{olveczky2011}. Here, the basal ganglia pathway, which uses reward-modulated exploration based learning, akin to the RMHL algorithm, works in parallel with the cortical pathway, modeled using the fully supervised FORCE algorithm. The SUPERTREX model uses both these pathways in parallel, with the RMHL-based pathway providing the supervisory signal that the FORCE-based pathway requires.
+
+In this article, we provide a modular and user-friendly Python re-implementation of the model presented by \textcite{pyle2019}. We were able to successfully reproduce the model performance in Python, for two tasks out of the three presented in the original article. For the third task, we were able to do so with limited robustness. We address this by introducing some modifications, and discuss how their inclusion vastly improves the robustness as well as scalability of the model.
+
+\subsubsection{Terminology}
+\begin{itemize}
+    \item Original scripts: the MATLAB scripts used by the authors to produce the results presented in ~\cite{pyle2019}.
+    \item Python adaptation: our Python adaptation of the original MATLAB scripts.
+    \item Python re-implementation: an improved version of our Python adaptation. % that improves the scalability and robustness of the original implementation.
+\end{itemize}
+
+\subsection{Framework}
+
+\textcite{pyle2019} proposes a model for sensorimotor learning using the framework of reservoir computing. The model is based on two existing reservoir computing techniques: FORCE and RMHL.\\
+
+\begin{equation}
+    \tau \frac{d \mathbf{x}}{d t}=-\mathbf{x}+J \mathbf{r}+Q \mathbf{z}
+    \label{eq:res_comp_x}
+\end{equation}
+
+\begin{equation}
+    \mathbf{r}=\tanh (\mathbf{x})+\mathbf{\epsilon}
+    \label{eq:res_comp_r}
+\end{equation}
+
+FORCE (or first-order reduced and controlled error) is a fully supervised learning rule, which is widely used within the reservoir computing framework \cite{sussillo2009}. A recurrently connected reservoir, composed of rate-coded neurons is trained to produce a target time series by modifying the readout weights between the reservoir and the output layer (Eq \ref{eq:FORCE_z}, \ref{eq:FORCE_dW}). The output, in turn, interacts with the reservoir by providing feedback (Eq \ref{eq:res_comp_x}, \ref{eq:res_comp_r}). FORCE can accurately generate complex dynamical target time-series. However, the model must have explicit knowledge of the target function, as FORCE requires a fully supervisory signal of the correct output in order to compute the error during training. \\
+
+
+\begin{equation}
+    \mathbf{z_1}=W_1 \mathbf{r}
+    \label{eq:FORCE_z}
+\end{equation}
+
+\begin{equation}
+    \tau_{w_1} \frac{d W_1}{d t}=-\mathbf{e r}^{T} P
+    \label{eq:FORCE_dW}
+\end{equation}
+
+RMHL (or Reward-Modulated Hebbian Learning) is built on the concept of reinforcement learning, and uses only a scalar error signal indicating reward, allowing it to be applicable in a wider range of scenarios than FORCE \cite{hoerzer2014}. RMHL introduces perturbations in the performance of the model, and uses the information gained from this exploration to find the target (Eq \ref{eq:RMHL_z}, \ref{eq:RMHL_dW}). This is akin to dopamine-dependent Hebbian learning in the basal ganglia. However, RMHL fails to converge to an accurate solution on several complex tasks. Moreover, it has been observed in songbirds that while the basal ganglia provides a tutor signal in the early stages, learning is eventually consolidated in a parallel cortical pathway, which is primarily responsible for motor activity \cite{olveczky2011}. RMHL cannot account for such empirical observations.\\
+
+
+\begin{equation}
+    \mathbf{z_2}=W_2 \mathbf{r}+\Psi(e) \boldsymbol{\eta}
+    \label{eq:RMHL_z}
+\end{equation}
+
+\begin{equation}
+    \tau_{w_2} \frac{d W_2}{d t}=\Phi(\hat{e}) \hat{\mathbf{z}} \mathbf{r}^{T}
+    \label{eq:RMHL_dW}
+\end{equation}
+
+SUPERTREX (Supervised Learning Trained by Reward Exploration), the model proposed by the authors, tries to merge the advantages of both of these algorithms by combining both models. The more wide-ranged applicability of RMHL, owing to its usage of a one dimensional error signal, is used to train the model, while the superior maintenance ability of FORCE is recruited to consolidate the tutoring of the RMHL pathway. This could also potentially support the empirical evidence showing the basal ganglia and cortical pathways working in tandem for motor skill acquisition, discussed above. Thus, the SUPERTREX model consists of two parallel pathways, one based on RMHL (exploratory) and one based on FORCE (mastery), each consisting of its own set of weights. The mastery pathway uses the output of the exploratory pathway as its supervisory signal (Eq \ref{eq:ST_z}, \ref{eq:ST_w1}, \ref{eq:ST_w2}).
+
+
+\begin{equation}
+    \mathbf{z}=\mathbf{z}_{1}+\mathbf{z}_{2}
+    \label{eq:ST_z}
+\end{equation}
+
+\begin{equation}
+    \tau_{w 1} \frac{d W_{1}}{d t}=\left(\mathbf{z}-\mathbf{z}_{1}\right) \mathbf{r}^{T} P
+    \label{eq:ST_w1}
+\end{equation}
+
+\begin{equation}
+    \tau_{w 2} \frac{d W_{2}}{d t}=\Phi(\hat{e}) \hat{\mathbf{z}} \mathbf{r}^{T}
+    \label{eq:ST_w2}
+\end{equation}
+    
+where $\mathbf{x}$ denotes the reservoir dynamics, $J$ the recurrent connectivity matrix, $Q$ the feedback weights and $\mathbf{r}$ the reservoir activity. The output $\mathbf{z}$ of the SUPERTREX model is the combination of the outputs $\mathbf{z_1}$ and $\mathbf{z_2}$ of the FORCE and RMHL pathways, respectively. $W_1$ and $W_2$ denote the readout weights of the two pathways, respectively, $e$ denotes the squared distance between the output and the target trajectory, $\tau$ is the corresponding timescales for learning, $\eta$ is the exploratory noise, $\epsilon$ is a small noise term and $P$ is a running estimate of the inverse of the correlation matrix of rates. $\Psi$ and $\Phi$ are two sub-linear functions that serve to damp runaway oscillations during learning and control weight update, respectively. $\hat{x}$  is a high-pass filtered version of $x$, which represents the recent changes in $x$.
+
+
+
+\subsection{Task}
+
+The authors test the SUPERTREX model on three motor tasks, with increasing difficulty, and compare its performance to those of FORCE and RMHL. The target of each task is to learn to produce a given spatio-temporal signal, under different constraints. Task 1 tests the performance of the model when the target output is known. This task requires the spatio-temporal signal to be produced directly by the model. Thus, the error signal is a direct indicator of the change required in the output of the model, i.e. fully supervisory. Task 2 and Task 3 use the paradigm of exploration by a multi-segmented arm, pivoted at a point. 
+
+Task 2 tests the performance of the model when the target output is unknown, and only an indirect error signal is provided. The task requires the angles between the arm segments to be generated by the model, which would in turn produce the trajectory of the target spatio-temporal signal. In this case, the error signal is not a direct indicator of the change required in the output of the model. A non-linear inverse transformation of the trajectory would be required to compute the desired angles between the arm segments. It is, thus, not a fully supervisory signal, but simply a reinforcement signal. In Task 3, the movement of the arm segments are penalised variably. This creates the need to choose one from multiple candidate solutions by optimising the cost of changing the angles between the arm segments.
+
+The simulation for each task includes a training phase and a testing phase. In the training phase, for ten periods, the time-series is generated by the model while the weights are being updated according to the current error feedback. After this, in the testing phase (lasting five periods), the readout weights are frozen and the time-series is generated using these frozen weights, without any further feedback-based update. In the SUPERTREX model, the exploratory pathway is also deactivated. It is also worth noting that the authors use teacher-forcing in the testing phase, which considerably improves the model performance by limiting the dependence on the stability of the learned solution (refer to Section ``State information provides stability of learned output" in ~\cite{pyle2019}).
+
+
+\subsubsection{Disclaimer}
+\textcite{pyle2019} proceed to test the model under variations of the above tasks, including disrupted learning and with additional state information. However, these variations have not been replicated by us. We only test the performance of the three learning rules on the three tasks, specified above.
+

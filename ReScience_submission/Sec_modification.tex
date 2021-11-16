@@ -1,0 +1,23 @@
+\section{Modification}
+
+The Python adaptation is a close adaptation of the original MATLAB scripts provided by the authors. However, on simulating their performance on the three tasks, we observed that while, for the first two tasks, the models performed as described in \textcite{pyle2019}, the performance of the SUPERTREX algorithm on Task 3 was not consistent, and was dependent on the seed used for the random number generator. On inspecting further, we notice that this was, in some cases, due to the uncontrolled exponential increase in the readout weights.\\
+
+To look into the robustness of the implementations further, we test the performance of the RMHL and SUPERTREX algorithms on Task 2 with certain modifications to the task parameters, specifically, the number of arm segments and the length of the arm segments. It would be expected for the behaviour to be comparable with the performance on the original task performance, or undergo a gradual decline. We test Task 2 on the arm parameters, which were used in Task 3, i.e. by increasing the number of arm segments from two to three and changing the length of each arm segment. We observe that RMHL performance is comparable to the original Task 2, wherein the time series is generated during the training phase, but is not maintained beyond (Original scripts: $0.846\pm0.299$, Python adaptation: $0.738\pm0.256$; n=11).  On the other hand, simulations of the SUPERTREX model, with 2 out of 11 seeds, were able to produce the target output satisfactorily (Original scripts: $0.016\pm0.007$, Python adaptation: $0.009\pm0.003$; n=2) (Figure~\ref{Fig:Comparison_Task2_Seg3}). However, in simulations with 9 out of 11 seeds, the weights increase exponentially, rendering the simulation unable to progress in a meaningful manner (Table~\ref{Table:deviation_tasks},~\ref{Table:deviation_prop_tasks}). \\
+    
+
+\input{Fig5}
+
+In order to improve the model performance, make the model more scalable in terms of task parameters, and also more robust (as seen in Task 3, with respect to reproducibility with different random seeds), we introduce two minor alterations.
+
+\begin{enumerate}
+    \item We introduce a compensation factor to the update of the readout weights in the exploratory pathway, inversely proportional to the number of segments. Specifically, when the number of segments is greater than two, we multiply the weight update by $0.1/n\_segs$ for Task 2 and by $0.5/n\_segs$ for Task 3.
+    \item The SUPERTREX model transfers the information from the exploratory pathway to the mastery pathway, only if the error is consistently below a certain threshold. In the original scripts, this threshold is set at 1.5e-3 for Task 1 and Task 2, while at 1.5e-2 for Task 3. We change the transfer threshold for Task 2 from 1.5e-3 to 1.5e-2. 
+\end{enumerate}
+
+These slight modifications address the shortcomings we encountered earlier with the performance of SUPERTREX in Task 2 and 3. Alteration \#1, by including a compensation factor for the change in number of arm segments, prevents the weights from increasing exponentially, and lets the simulation proceed in a meaningful manner. Alteration \#2, by increasing the error threshold governing the transfer of information to the mastery pathway, makes the model more tolerant of fluctuations, while continuing to explore and learn a good solution. Although this does not lead to a critical change for Task 1 (Original scripts: $0.006\pm0.003$, n=11; Modified Python re-implementation: $0.004\pm0.003$, n=11) and Task 2 (Original scripts: $0.011\pm0.003$, n=11; Modified Python re-implementation: $0.010\pm0.004$, n=11), this alteration improves the performance of SUPERTREX on Task 3 (Original scripts: $0.881\pm0.224$, n=11; Modified Python re-implemen\-tation: $0.140\pm0.071$, n=11). Simulations with 10 out of 11 seeds had satisfactory performance (Deviation $< 0.5$), compared to 6 out of 11 simulations for the original scripts. Further, it unlocks the potential for the model to be more scalable. We find that with these alterations, on merely increasing the number of time-steps per training cycle and with no further fine tuning of hyper-parameters, the model is able to proceed without an exponential increase in weights over a wider range of task parameters. For instance, on adding surplus segments with length 0.1 each, the model is able to perform in a satisfactory manner, for most cases, with up to 50 arm segments (Table~\ref{Table:deviation_scalability}, Figure~\ref{Fig:Scalability_Task2}). Better accuracy can be achieved by further fine tuning of the hyper-parameters.
+
+
+
+\input{Table3}
+
+\input{Fig6}

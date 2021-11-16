@@ -1,0 +1,40 @@
+
+\begin{table}[h!]
+\begin{center}
+ \begin{tabular}{||c | c | c c c ||} 
+ \hline
+   \multicolumn{2}{||c|}{Task 2 variant} & \multicolumn{3}{c||}{Deviation metric} \\ [0.5ex] 
+\hline
+No. of segments & Time steps & Mean & Median & Standard Deviation \\ [0.5ex] 
+ \hline\hline
+ 3 & 10000 & 0.057 &	0.032 &	0.069 \\ 
+ \hline
+ 4 & 10000 & 0.242 &	0.221 &	0.136 \\ 
+ \hline
+ 5 & 10000 & 0.141 &	0.080 &	0.147 \\ 
+ \hline
+ 6 & 10000 & 0.181 &	0.160 &	0.133 \\ 
+ \hline
+ 7 & 10000 & 0.173 &	0.129 &	0.130 \\ 
+ \hline
+ 8 & 10000 & 0.253 &	0.230 &	0.137 \\ 
+ \hline
+ 9 & 10000 & 0.331 &	0.297 &	0.168 \\ 
+ \hline
+ 10 & 10000 & 0.417 &	0.409 &	0.151 \\ 
+ \hline
+ 15 & 10000 & 0.538 &	0.512 &	0.179 \\ 
+ \hline 
+ 20 & 15000 & 0.366 &	0.324 &	0.188 \\ 
+ \hline
+ 30 & 20000 & 0.549 &	0.489 &	0.236 \\ 
+ \hline
+ 40 & 20000 & 0.372 &	0.313 &	0.228 \\ 
+ \hline
+ 50 & 30000 & 0.375 &	0.283 &	0.281 \\ [1ex] 
+ \hline
+\end{tabular}
+\end{center}
+ \caption{Deviation metric showing the performance of the modified Python implementation on increasing number of segments for Task 2. Each variant is simulated with the default seed (5489) and ten additional seeds. The mean, median and standard deviation of the deviation metric over these eleven simulations are tabulated here.}
+ \label{Table:deviation_scalability}
+\end{table}

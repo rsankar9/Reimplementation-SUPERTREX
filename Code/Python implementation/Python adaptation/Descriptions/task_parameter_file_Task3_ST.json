@@ -1,0 +1,14 @@
+{
+    "rseed"                 :   0,
+    "dataset_file"          :   "butterfly_coords.npz",
+    "algorithm"             :   "SUPERTREX",
+    "results_folder"        :   "Results/SUPERTREX_Task3_01",
+    "git-hash"              :   0,
+    "timespan"              :   10000,
+    "task_type"             :   3,
+    "n_segs"                :   3,
+    "arm_len"               :   [1.8, 1.2, 0.6],
+    "arm_cost"              :   [0.1, 0.01, 0.0],
+    "display_plot"          :   "No",
+    "plot_format"           :   "eps"
+}

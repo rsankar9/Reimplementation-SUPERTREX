@@ -1,0 +1,15 @@
+{
+    "N"                 :   1000,
+    "lmbda"             :   1.5,
+    "sparsity"          :   0.1,
+    "dT"                :   0.2,
+    "n_train_trials"    :   10,
+    "n_test_trials"     :   5,
+    "alpha"             :   0.025,
+    "gamma"             :   10,
+    "k"                 :   0.5,
+    "tau"               :   10,
+    "tau_w"             :   0.02,
+    "tau_e"             :   1000,
+    "tau_z"             :   1
+}

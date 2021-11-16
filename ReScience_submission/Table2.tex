@@ -1,0 +1,57 @@
+
+\begin{table}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{||p{2em}|c||c|c||c|c||c|c||}
+ \hline
+ \multicolumn{2}{||c||}{} & 
+ \multicolumn{2}{|c||}{MATLAB} & \multicolumn{2}{|c||}{Python adaptation}  & \multicolumn{2}{|c||}{Python re-implementation}\\
+ \hline
+ Task & Model & Satisfactory & Total & Satisfactory & Total  & Satisfactory & Total  \\
+ \hline
+ \multirow{3}{4em}{   \#1  } & FORCE   & 
+11	&   11 & 
+11	&   11 & 
+11	&   11\\
+ & RMHL  &
+11	&   11 & 
+11	&   11 & 
+11	&   11\\
+ & ST  &
+11	&   11 & 
+11	&   11 & 
+11	&   11\\
+ \hline
+  \multirow{2}{4em}{ \#2} & RMHL   & 
+0	&   11 & 
+0	&   11 & 
+0	&   11\\
+ & ST &    
+11	&   11 & 
+11	&   11 & 
+11	&   11\\
+ \hline
+  \multirow{2}{4em}{\#3} & RMHL   & 
+1	&   11 & 
+2	&   11 & 
+0	&   11\\
+ & ST &
+5   &	11 & 
+4	&   11 & 
+10	&   11 \\
+ \hline
+  \multirow{2}{4em}{ \#2'} & RMHL   & 
+0	&   11 & 
+1	&   11 & 
+0	&   11 \\
+ & ST &    
+2	&   2 & 
+2	&   2 & 
+11	&   11 \\
+ \hline
+\end{tabular}
+}
+% \end{adjustbox}
+ \caption{The proportion of model simulations categorised as having satisfactory performance. Each variant is simulated with the default seed (5489) and ten additional seeds. Number of satisfactory simulations refers to the number of simulations that were below the threshold (0.5) for the deviation metric. The total number of simulations refer to the number of simulations which successfully reached completion, without the weights growing exponentially.  (ST: SUPERTREX; 2': 3 segment variant of Task 2)}
+  \label{Table:deviation_prop_tasks}
+ \end{table}
+

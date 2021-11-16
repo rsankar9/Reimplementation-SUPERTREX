@@ -1,0 +1,14 @@
+
+\section{Discussion}
+
+In this article, we discussed the SUPERTREX model presented by
+\textcite{pyle2019}. We compared the results presented in the paper,
+both with the results obtained using the original scripts, and with our modular and user-friendly Python adaptation. Furthermore, we were able to improve the robustness and scalability of the model with two minor alterations.
+
+The Python adaptation strives to be a close adaptation of the original scripts in MATLAB and differs mainly in the method of initialisation of the reservoir connectivity matrix. This is due to the usage of the function {\tt sprandn} in the original scripts, whose internal implementation is not freely available. Figure~\ref{Fig:Comparison_sprandn} shows that, on importing initialisation matrix from MATLAB, the exact same results can be obtained in the Python adaptation, as well. Most of the details for the implementation of the models are also described in the paper. Only two necessary details were missing, both concerning the update of the readout weights of the exploratory pathway in the RMHL and SUPERTREX models: One, the inclusion of a crucial learning rate of 0.0005, for Tasks 1-3, and two, an additional compensatory factor of 0.5, for Task 3. There is another discrepancy in the function $psi(x)$ for Task 3. The scripts provided by the authors use a factor of 0.005, whereas the article mentions this factor to be 0.025.
+
+The three algorithms (FORCE, RMHL and SUPERTREX) have been tested on three tasks, presented in \textcite{pyle2019}. For Task 1 and 2, we verify that the three algorithms function as presented in the paper, and validate that our Python re-implemen\-tation produces comparable results. For Task 3, the SUPERTREX model's behaviour is also reproducible, although the performance is dependent on the seed used for the random number generator. Furthermore, we observed that this implementation is quite sensitive to changes in task parameters, such as the number of arms. This was due to the uninhibited increase in the readout weights. We propose the inclusion of a compensation factor for the number of arm segments, which inhibits the growth of the readout weights, and allows the simulation to proceed in a meaningful manner. This considerably improves the robustness and the scalability of the original model.\\
+
+We conclude that the results presented in the paper are  reproducible for two tasks, using the original MATLAB scripts provided by the authors, and also, replicable in Python for all tasks with comparable performance.
+
+\input{Fig7}

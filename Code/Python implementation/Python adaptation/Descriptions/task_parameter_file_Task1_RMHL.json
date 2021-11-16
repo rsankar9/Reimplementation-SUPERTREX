@@ -1,0 +1,14 @@
+{
+    "rseed"                 :   0,
+    "dataset_file"          :   "butterfly_coords.npz",
+    "algorithm"             :   "RMHL",
+    "results_folder"        :   "Results/RMHL_Task1",
+    "git-hash"              :   0,
+    "timespan"              :   10000,
+    "task_type"             :   1,
+    "n_segs"                :   1,
+    "arm_len"               :   [1.8],
+    "arm_cost"              :   [0.0],
+    "display_plot"          :   "No",
+    "plot_format"           :   "eps"
+}

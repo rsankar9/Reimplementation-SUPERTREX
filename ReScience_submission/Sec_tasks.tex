@@ -1,0 +1,88 @@
+
+\section{Comparison with Python Adaptation}
+
+In this section, we compare the results presented in the paper \cite{pyle2019} with the MATLAB implementation by the authors and our Python adaptation. The original scripts, although not available online, are readily available on request. We present our adaptation of this model in the open source framework Python, which has been built based on the paper and the MATLAB scripts provided by the authors. In contrast to the original scripts, it is modular and is easily modifiable with external json descriptor files. We compare the results presented in the paper, with simulations of the MATLAB scripts, provided by the authors, and also with our adaptation in Python  \footnote{In Figures~\ref{Fig:Comparison_Task1}-~\ref{Fig:Comparison_Task3}, the results presented in the paper have been reused in the column titled "original".}.\\ 
+
+To validate our Python adaptation, we test the three algorithms on three tasks by simulating them using both the original scripts and our Python adaptation. For each algorithm-task combination, we produce ten simulations with arbitrary seeds initialising the random generator and one additional simulation using the default seed of MATLAB (equivalent to seed 5489 of the numpy random generator). Except for the default seed, the ten arbitrary seeds are different for the Python and MATLAB simulations, and for each algorithm-task combination. Both MATLAB and numpy use the Mersenne Twister pseudo-random number generator \cite{matsumoto1998}. To evaluate the performance of the algorithm, the authors plot the ``distance from target", i.e. the square root of the low pass filtered version of the mean squared error, over the progression of the simulation. In order to categorise the model performance as satisfactory or unsatisfactory, we further compute a \textbf{deviation metric} by calculating the mean ``distance from target" over the testing phase. If this deviation metric is below the threshold of 0.5 (set by visual inspection), the model is said to have satisfactorily learnt and produced the target output.
+
+
+
+\subsection{Task 1}
+
+Here, we compare the simulations of the original scripts and our adaptation for Task 1, using FORCE, RMHL and SUPERTREX, with the results presented in the article. Task 1 is designed to test the performance of these three algorithms when generating a known target output. The objective of this task is to produce a time-series of 2-D coordinates required to traverse a target trajectory, in this case, the parameterized curve of a butterfly. The model is trained to generate an output which closely matches the target function. \\ 
+
+The article claims that:
+\begin{itemize}
+\item under the FORCE framework, the target time-series is learned accurately and is maintained in a stable manner during the testing phase (Figure~\ref{Fig:compTask1FORCE}).
+\item under the RMHL framework, the target time-series is generated accurately during the training phase, however is not maintained perfectly during the testing phase (Figure~\ref{Fig:compTask1RMHL}).
+\item under the SUPERTREX framework, the target time-series is learned accurately and is also maintained in a stable manner during testing phase, albeit not as well as FORCE (Figure~\ref{Fig:compTask1ST}).
+\end{itemize}
+
+We validate these observations with the MATLAB scripts provided by the authors as well as with our Python adaptation. To do so, we run the simulations with the default seed and repeat it ten times with different (arbitrarily chosen) seeds initialising the random number generator.  
+
+
+We observe that:
+\begin{itemize}
+\item under the FORCE framework, the target time-series is learned accurately and is maintained in a stable manner during the testing phase, as claimed. The mean deviation over eleven simulations, for both the original scripts ($0.003\pm0.002$; n=11) and the Python adaptation ($0.004\pm0.003$; n=11) is much lower than the threshold of 0.5 (Figure~\ref{Fig:compTask1FORCE},~\ref{Fig:compTask1FORCE_MSE}).
+\item under the RMHL framework, the target time-series is generated accurately during the training phase, however is not maintained perfectly during the testing phase, as claimed. The mean deviation, for both the original scripts ($0.168\pm0.038$; n=11) and the Python adaptation ($0.182\pm0.046$; n=11), is higher than that with FORCE (Figure~\ref{Fig:compTask1RMHL},~\ref{Fig:compTask1RMHL_MSE}).
+\item under the SUPERTREX framework, the target time-series is learned accurately and is also maintained in a stable manner during testing phase, albeit not as well as FORCE, as claimed. The mean deviation, for both the original scripts ($0.006\pm0.003$; n=11) and the Python adaptation ($0.006\pm0.003$; n=11), is much better than that for RMHL, but slightly worse than with FORCE (Figure~\ref{Fig:compTask1ST}, ~\ref{Fig:compTask1ST_MSE}).
+
+\end{itemize}
+
+Both the original scripts and the Python adaptation are able to successfully closely reproduce the results presented in the paper for Task 1 (Figure~\ref{Fig:Comparison_Task1},\ref{Fig:Comparison_Task1_MSE}; Table~\ref{Table:deviation_tasks},~\ref{Table:deviation_prop_tasks}).
+
+\input{Fig1-2}
+
+
+\subsection{Task 2}
+Here, we compare the simulations of the original scripts and our Python adaptation for Task 2, using FORCE, RMHL and SUPERTREX, with the results presented in the article. Task 2 is designed to test the performance of these three algorithms when generating an unknown target from an indirect error signal. Using the paradigm of a pivoted multi-segmented arm, the objective of this task is to produce a time‐series by generating the angles between the arm segments. Motor output does not control the position of the end-effector of the arm, but instead controls the angles of the arm joints, which are non-linearly related to end-effector position.\\
+
+The article claims that:
+\begin{itemize}
+\item the FORCE framework cannot be applied to this task, as FORCE requires the exact target to be provided as a supervisory error, which in this case would be the unknown target angles. Since, we do not have this information beforehand, and require the model to derive it, the FORCE framework is inapplicable to this task.  
+\item under the RMHL framework, the target time-series is imitated well by the model during the training phase, however the weights do not converge, and hence, it is unable to maintain the time-series in a stable manner during the testing phase (Figure~\ref{Fig:compTask2RMHL}).
+\item under the SUPERTREX framework, the target time-series is learned accurately and is also generated in a stable manner, with minor divergences, during testing phase, owing to the contribution of the pathway based on the FORCE algorithm (Figure~\ref{Fig:compTask2ST}).
+\end{itemize}
+
+We verify these observations with the MATLAB scripts provided by the authors as well as with our Python adaptation. To do so, we run the simulations with the default seed of MATLAB and re-simulate it with ten arbitrary seeds initialising the random number generator. We do not modify any task conditions or model hyper-parameters.  
+
+
+We observe that:
+\begin{itemize}
+\item indeed, the FORCE framework is inapplicable to this task.  
+\item under the RMHL framework, the target time-series is imitated well by the model during the training phase, however the weights do not converge, and hence, it is unable to maintain the time-series in a stable manner during the testing phase. The mean deviation over eleven simulations, for both the original scripts ($0.759\pm0.284$; n=11) and the Python adaptation ($0.814\pm0.288$; n=11) is higher than the threshold of 0.5 (Figure~\ref{Fig:compTask2RMHL}).
+\item under the SUPERTREX framework, the target time-series is learned accurately and is also generated in a stable manner, with minor divergences, during testing phase, owing to the contribution of the pathway based on the FORCE algorithm. The mean deviation over eleven simulations, for both the original scripts ($0.011\pm0.003$; n=11) and the Python adaptation ($0.012\pm0.005$; n=11) is below the threshold of 0.5 and much lower than that with RMHL (Figure~\ref{Fig:compTask2ST}).
+\end{itemize}
+
+The MATLAB scripts provided by the authors and the Python adaptation are able to successfully closely reproduce the results presented for Task 2 in the paper, with the default seed as well as with the 10 arbitrary seeds (Figure~\ref{Fig:Comparison_Task2}; Table~\ref{Table:deviation_tasks},~\ref{Table:deviation_prop_tasks}).
+
+\input{Fig3}
+
+
+\subsection{Task 3}
+Here, we compare the performance of the MATLAB scripts and our Python adaptation on Task 3, for the three algorithms, with the results presented in the article. Task 3 is an extension of Task 2, designed to test the constraint optimisation ability of these three algorithms when generating an unknown target from an indirect error signal. Using the paradigm of a pivoted multi-segmented arm, the objective of this task is to produce a time‐series by generating the angles between the arm segments, while also optimising the movement cost of each arm segment. Hence, the arm is required to traverse the butterfly, while carefully choosing the segment to rotate, in order to minimise the movement cost of its segments. Post the training phase, the readout weights are frozen and in the SUPERTREX model, the exploratory pathway is deactivated. \\
+
+The article claims that:
+\begin{itemize}
+    \item FORCE can't be applied to this task, as explained for Task 2.
+    \item under the RMHL framework, the target time-series is imitated well by the model during the training phase, however the weights do not converge, and hence, it poorly maintains the time-series during the testing phase (Figure~\ref{Fig:compTask3RMHL}).
+    \item under the SUPERTREX framework, the performance is much better than RMHL. The target time-series is learned accurately and is also generated with minor divergences, during testing phase (Figure~\ref{Fig:compTask3ST}).
+\end{itemize}
+
+We verify these observations with the MATLAB scripts provided by the authors as well as with our Python adaptation. To do so, we run the simulations with the default seed of MATLAB and re‐simulate it with ten arbitrary seeds initialising the random number generator. 
+
+We observe that:
+\begin{itemize}
+    \item indeed, the FORCE framework is inapplicable to this task, as claimed.  
+    \item under the RMHL framework, the target time-series is imitated well by the model during the training phase, however the weights do not converge, and hence, it poorly maintains the time-series during the testing phase, as claimed. The mean deviation over eleven simulations, for both the original scripts ($0.850\pm0.313$; n=11) and the Python adaptation ($0.658\pm0.216$; n=11) is higher than the threshold of 0.5. All eleven simulations with different seeds did not generate the target output in a satisfactory manner (i.e. deviation $> 0.5$ for 11/11 seeds) (Figure~\ref{Fig:compTask3RMHL}).
+    \item under the SUPERTREX framework, the performance is not much better than RMHL, contrary to the article's claim. The target time-series is not generated in a satisfactory manner, during the testing phase, for more than 50\% of the tested simulations (Original scripts: 6/11 and Python adaptation: 7/11). The mean deviation over eleven simulations, for both the original scripts ($0.881\pm0.224$; n=11) and the Python adaptation ($0.837\pm0.241$; n=11) is above the threshold of 0.5 and comparable with that of RMHL (Figure~\ref{Fig:compTask3ST}).
+\end{itemize}
+
+The original scripts and the Python adaptation are able to successfully reproduce the results presented in the paper with the default seed as well as with the 10 arbitrary seeds for the RMHL algorithm, but not for the SUPERTREX algorithm (Figure~\ref{Fig:Comparison_Task2}; Table~\ref{Table:deviation_tasks},~\ref{Table:deviation_prop_tasks}).
+
+
+
+\input{Table1}
+\input{Table2}
+
+\input{Fig4}
