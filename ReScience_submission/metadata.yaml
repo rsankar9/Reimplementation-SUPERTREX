@@ -14,17 +14,17 @@ authors:
     orcid: 0000-0002-2428-4592
     email: Remya.Sankar@inria.fr
     affiliations: 1,2,3,*   # * is for contact author
-    
+
   - name: Nicolas Thou
     orcid: 0000-0001-9095-9677
     email: Nicolas.Thou@inria.fr
     affiliations: 1
-    
+
   - name: Nicolas P. Rougier
     orcid: 0000-0002-6972-589X
     email: Nicolas.Rougier@inria.fr
     affiliations: 1,2,3
-    
+
   - name: Arthur Leblois
     orcid: 0000-0002-9392-5939
     email: Arthur.Leblois@u-bordeaux.fr
@@ -37,12 +37,12 @@ affiliations:
   - code:    1
     name:    INRIA Bordeaux Sud-Ouest
     address: Bordeaux, France
-    
+
   - code:    2
     name:    LaBRI, Université de Bordeaux, Institut Polytechnique de Bordeaux,
              Centre National de la Recherche Scientifique, UMR 5800
     address: Talence, France
-    
+
   - code:    3
     name:    Institut des Maladies Neurodégénératives, Université  de Bordeaux,
              Centre National de la Recherche Scientifique, UMR 5293
@@ -76,7 +76,7 @@ abstract: ""
 
 # Bibliography file (yours)
 bibliography: bibliography.bib
-  
+
 # Type of the article
 # Type can be:
 #  * Editorial
@@ -91,40 +91,40 @@ domain: Computational Neuroscience
 # Coding language (main one only if several)
 language: Python
 
-  
+
 # To be filled by the author(s) after acceptance
 # -----------------------------------------------------------------------------
 
 # For example, the URL of the GitHub issue where review actually occured
-review: 
-  - url: 
+review:
+  - url: https://github.com/ReScience/submissions/issues/50
 
 contributors:
-  - name:
-    orcid: 
+  - name: Benoît Girard
+    orcid: 0000-0002-8117-7064
     role: editor
-  - name:
-    orcid:
+  - name: Daniel Schmid
+    orcid: 0000-0002-2439-9453
     role: reviewer
-  - name:
-    orcid:
+  - name: Robin Gutzen
+    orcid: 0000-0001-7373-5962
     role: reviewer
 
 # This information will be provided by the editor
 dates:
   - received:  March 12, 2020
-  - accepted:
-  - published: 
+  - accepted:  November 22, 2021
+  - published: November 22, 2021
 
 # This information will be provided by the editor
 article:
-  - number: # Article number will be automatically assigned during publication
-  - doi:    # DOI from Zenodo
-  - url:    # Final PDF URL (Zenodo or rescience website?)
+  - number: 11 # Article number will be automatically assigned during publication
+  - doi: 10.5281/zenodo.5718075   # DOI from Zenodo
+  - url: https://zenodo.org/record/5718075/files/article.pdf   # Final PDF URL (Zenodo or rescience website?)
 
 # This information will be provided by the editor
 journal:
   - name:   "ReScience C"
   - issn:   2430-3658
-  - volume: 4
+  - volume: 7
   - issue:  1
